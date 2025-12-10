@@ -1,4 +1,14 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/simple-eiffel/claude_eiffel_op_docs/main/artwork/LOGO.png" alt="simple_ library logo" width="400">
+</p>
+
 # simple_toml
+
+**[Documentation](https://simple-eiffel.github.io/simple_toml/)** | **[GitHub](https://github.com/simple-eiffel/simple_toml)**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Eiffel](https://img.shields.io/badge/Eiffel-25.02-blue.svg)](https://www.eiffel.org/)
+[![Design by Contract](https://img.shields.io/badge/DbC-enforced-orange.svg)]()
 
 TOML parser and writer for Eiffel.
 
