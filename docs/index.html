@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple_toml - TOML Parser for Eiffel</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="https://raw.githubusercontent.com/simple-eiffel/claude_eiffel_op_docs/main/artwork/LOGO.png" alt="simple_* logo" class="logo">
+        </div>
+        <h1>simple_toml</h1>
+        <p class="tagline">TOML Parser and Writer for Eiffel</p>
+        <div class="badges">
+            <span class="badge badge-version">Planned</span>
+            <span class="badge badge-license">MIT</span>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#api">API</a></li>
+            <li><a href="https://github.com/simple-eiffel/simple_toml">GitHub</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                <strong>simple_toml</strong> provides TOML parsing and writing for Eiffel.
+                Used as the format for UCF (Universe Configuration Files) in simple_lsp.
+            </p>
+            <p>
+                Part of the <a href="https://github.com/simple-eiffel">Simple Eiffel</a> ecosystem.
+                Backend for <a href="https://github.com/simple-eiffel/simple_codec">simple_codec</a>.
+            </p>
+        </section>
+
+        <section id="api">
+            <h2>API Preview</h2>
+            <pre><code><span class="comment">-- Parse TOML file</span>
+toml: SIMPLE_TOML
+data: TOML_TABLE
+
+<span class="keyword">create</span> toml
+data := toml.parse_file (<span class="string">"config.toml"</span>)
+
+<span class="comment">-- Access values</span>
+name := data.string_item (<span class="string">"name"</span>)
+version := data.string_item (<span class="string">"version"</span>)</code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 simple_* ecosystem. MIT License.</p>
+        <p>
+            <a href="https://github.com/simple-eiffel/simple_toml">GitHub</a> |
+            <a href="https://simple-eiffel.github.io">Documentation</a>
+        </p>
+    </footer>
+</body>
+</html>
