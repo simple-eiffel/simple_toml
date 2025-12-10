@@ -1,0 +1,23 @@
+# Eiffel compiled/generated files
+EIFGENs/
+*.melted
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Backup files
+*.swp
+*.bak
+*~
+
+# IDE files
+.vscode/
+.idea/
+.eiffel_lsp/
+
+# OS files
+.DS_Store
+Thumbs.db
