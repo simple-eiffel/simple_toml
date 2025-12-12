@@ -26,7 +26,9 @@ class
 
 feature -- Parsing
 
-	parse (a_toml_text: STRING_32): detachable TOML_TABLE
+	parse,
+	from_string,
+	parse_text (a_toml_text: STRING_32): detachable TOML_TABLE
 			-- Parse TOML text and return root table.
 			-- On error, returns Void and populates `last_errors' with details.
 		require
@@ -52,7 +54,9 @@ feature -- Parsing
 			errors_cleared_on_success: Result /= Void implies not has_errors
 		end
 
-	parse_file (a_file_path: STRING_32): detachable TOML_TABLE
+	parse_file,
+	load,
+	load_file (a_file_path: STRING_32): detachable TOML_TABLE
 			-- Parse TOML from file and return root table.
 			-- On error, returns Void and populates `last_errors' with details.
 		require
@@ -88,7 +92,9 @@ feature -- Parsing
 
 feature -- Writing
 
-	to_toml (a_table: TOML_TABLE): STRING_32
+	to_toml,
+	to_string,
+	serialize (a_table: TOML_TABLE): STRING_32
 			-- Convert table to TOML text
 		require
 			table_not_void: a_table /= Void
@@ -98,7 +104,9 @@ feature -- Writing
 			result_not_void: Result /= Void
 		end
 
-	to_file (a_table: TOML_TABLE; a_file_path: STRING_32)
+	to_file,
+	save,
+	save_file (a_table: TOML_TABLE; a_file_path: STRING_32)
 			-- Write table to file as TOML
 		require
 			table_not_void: a_table /= Void
@@ -173,7 +181,9 @@ feature -- Error Tracking
 
 feature -- Building
 
-	new_table: TOML_TABLE
+	new_table,
+	create_table,
+	table: TOML_TABLE
 			-- Create a new empty table
 		do
 			create Result.make
@@ -192,7 +202,9 @@ feature -- Building
 			is_inline: Result.is_inline_table
 		end
 
-	new_array: TOML_ARRAY
+	new_array,
+	create_array,
+	array: TOML_ARRAY
 			-- Create a new empty array
 		do
 			create Result.make
@@ -279,7 +291,9 @@ feature -- Building
 
 feature -- Querying
 
-	value_at (a_table: TOML_TABLE; a_path: STRING_32): detachable TOML_VALUE
+	value_at,
+	get,
+	lookup (a_table: TOML_TABLE; a_path: STRING_32): detachable TOML_VALUE
 			-- Get value at dotted path (e.g., "database.server.host")
 		require
 			table_not_void: a_table /= Void
@@ -302,7 +316,8 @@ feature -- Querying
 			Result := l_current
 		end
 
-	string_at (a_table: TOML_TABLE; a_path: STRING_32): detachable STRING_32
+	string_at,
+	get_string (a_table: TOML_TABLE; a_path: STRING_32): detachable STRING_32
 			-- Get string value at dotted path
 		require
 			table_not_void: a_table /= Void
@@ -313,7 +328,8 @@ feature -- Querying
 			end
 		end
 
-	integer_at (a_table: TOML_TABLE; a_path: STRING_32): INTEGER_64
+	integer_at,
+	get_integer (a_table: TOML_TABLE; a_path: STRING_32): INTEGER_64
 			-- Get integer value at dotted path (0 if not found)
 		require
 			table_not_void: a_table /= Void
@@ -324,7 +340,8 @@ feature -- Querying
 			end
 		end
 
-	boolean_at (a_table: TOML_TABLE; a_path: STRING_32): BOOLEAN
+	boolean_at,
+	get_boolean (a_table: TOML_TABLE; a_path: STRING_32): BOOLEAN
 			-- Get boolean value at dotted path (False if not found)
 		require
 			table_not_void: a_table /= Void
