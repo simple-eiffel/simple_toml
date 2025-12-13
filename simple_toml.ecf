@@ -21,7 +21,7 @@
 		<cluster name="src" location=".\src\" recursive="true"/>
 	</target>
 	<target name="simple_toml_tests" extends="simple_toml">
-		<root class="APPLICATION" feature="make"/>
+		<root class="TEST_APP" feature="make"/>
 		<option warning="warning">
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
@@ -30,6 +30,6 @@
 		<variable name="SYSTEM_PATH" value="D:\prod\simple_toml"/>
 		<library name="simple_testing" location="$SIMPLE_TESTING\simple_testing.ecf"/>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
-		<cluster name="test" location=".\testing\" recursive="true"/>
+		<cluster name="tests" location=".\testing\" recursive="true"/>
 	</target>
 </system>

@@ -24,9 +24,9 @@ feature -- Test: Parsing
 			create toml
 			table := toml.parse ("name = %"Alice%"%Nage = 30")
 			assert_attached ("parsed", table)
-			if attached table then
-				assert_strings_equal ("name", "Alice", table.string_item ("name"))
-				assert_integers_equal ("age", 30, table.integer_item ("age"))
+			if attached table and then attached table.string_item ("name") as l_name then
+				assert_strings_equal ("name", "Alice", l_name)
+				assert_integers_equal ("age", 30, table.integer_item ("age").as_integer_32)
 			end
 		end
 
@@ -40,8 +40,8 @@ feature -- Test: Parsing
 		do
 			create toml
 			table := toml.parse ("message = %"hello world%"")
-			if attached table then
-				assert_strings_equal ("string value", "hello world", table.string_item ("message"))
+			if attached table and then attached table.string_item ("message") as l_msg then
+				assert_strings_equal ("string value", "hello world", l_msg)
 			else
 				assert_true ("parsed", False)
 			end
@@ -58,7 +58,7 @@ feature -- Test: Parsing
 			create toml
 			table := toml.parse ("count = 42")
 			if attached table then
-				assert_integers_equal ("integer value", 42, table.integer_item ("count"))
+				assert_integers_equal ("integer value", 42, table.integer_item ("count").as_integer_32)
 			else
 				assert_true ("parsed", False)
 			end
@@ -108,9 +108,9 @@ feature -- Test: Parsing
 		do
 			create toml
 			table := toml.parse ("[server]%Nhost = %"localhost%"%Nport = 8080")
-			if attached table and then attached table.table_item ("server") as server then
-				assert_strings_equal ("host", "localhost", server.string_item ("host"))
-				assert_integers_equal ("port", 8080, server.integer_item ("port"))
+			if attached table and then attached table.table_item ("server") as server and then attached server.string_item ("host") as l_host then
+				assert_strings_equal ("host", "localhost", l_host)
+				assert_integers_equal ("port", 8080, server.integer_item ("port").as_integer_32)
 			else
 				assert_true ("parsed", False)
 			end
