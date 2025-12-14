@@ -1,0 +1,9 @@
+{
+  "name": "simple_toml",
+  "version": "0.1.0",
+  "description": "Simple Eiffel library: simple_toml",
+  "author": "Larry Rix",
+  "license": "MIT",
+  "category": "data-formats",
+  "keywords": ["toml", "parser", "config", "serialization"]
+}
