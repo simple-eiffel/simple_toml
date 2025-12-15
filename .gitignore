@@ -1,5 +1,8 @@
-# Eiffel compiled/generated files
+# Eiffel build artifacts
 EIFGENs/
+Documentation/
+
+# Compiled files
 *.melted
 *.o
 *.obj
@@ -16,8 +19,8 @@ EIFGENs/
 # IDE files
 .vscode/
 .idea/
-.eiffel_lsp/
 
 # OS files
 .DS_Store
 Thumbs.db
+
