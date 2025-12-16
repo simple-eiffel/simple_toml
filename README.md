@@ -18,6 +18,18 @@ Part of the [Simple Eiffel](https://github.com/simple-eiffel) ecosystem.
 
 **Planned** - Backend for simple_codec
 
+## Installation
+
+Set the ecosystem environment variable (one-time setup for all simple_* libraries):
+```
+SIMPLE_EIFFEL=D:\prod
+```
+
+Add to your ECF:
+```xml
+<library name="simple_toml" location="$SIMPLE_EIFFEL/simple_toml/simple_toml.ecf"/>
+```
+
 ## Overview
 
 Parses and writes [TOML](https://toml.io/) format files. Used as the format for UCF (Universe Configuration Files) in simple_lsp.
