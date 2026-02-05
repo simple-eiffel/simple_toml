@@ -608,27 +608,27 @@ feature {NONE} -- Character operations
 			end
 		end
 
-	is_bare_key_char (c: CHARACTER_32): BOOLEAN
+	is_bare_key_char (a_c: CHARACTER_32): BOOLEAN
 			-- Is c valid in a bare key?
 		do
-			Result := (c >= 'A' and c <= 'Z') or
-					  (c >= 'a' and c <= 'z') or
-					  (c >= '0' and c <= '9') or
-					  c = '_' or c = '-'
+			Result := (a_c >= 'A' and a_c <= 'Z') or
+					  (a_c >= 'a' and a_c <= 'z') or
+					  (a_c >= '0' and a_c <= '9') or
+					  a_c = '_' or a_c = '-'
 		end
 
-	is_digit (c: CHARACTER_32): BOOLEAN
+	is_digit (a_c: CHARACTER_32): BOOLEAN
 			-- Is c a decimal digit?
 		do
-			Result := c >= '0' and c <= '9'
+			Result := a_c >= '0' and a_c <= '9'
 		end
 
-	is_hex_digit (c: CHARACTER_32): BOOLEAN
+	is_hex_digit (a_c: CHARACTER_32): BOOLEAN
 			-- Is c a hexadecimal digit?
 		do
-			Result := (c >= '0' and c <= '9') or
-					  (c >= 'a' and c <= 'f') or
-					  (c >= 'A' and c <= 'F')
+			Result := (a_c >= '0' and a_c <= '9') or
+					  (a_c >= 'a' and a_c <= 'f') or
+					  (a_c >= 'A' and a_c <= 'F')
 		end
 
 	hex_to_integer (a_hex: STRING_32): INTEGER
