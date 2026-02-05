@@ -324,8 +324,8 @@ feature -- Output
 
 				Result.append (quote_key (l_key))
 				Result.append (" = ")
-				if attached item (l_key) as l_val then
-					Result.append (l_val.to_toml_compact)
+				if attached item (l_key) as al_l_val then
+					Result.append (al_l_val.to_toml_compact)
 				end
 			end
 
@@ -349,7 +349,7 @@ feature -- Output
 			-- First pass: output simple key-value pairs
 			across key_order as ic loop
 				l_key := ic
-				if attached item (l_key) as l_val then
+				if attached item (l_key) as al_l_val then
 					l_value := l_val
 					if l_value.is_table and not l_value.is_inline_table then
 						-- Collect sub-tables for later

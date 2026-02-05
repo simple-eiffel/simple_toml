@@ -149,9 +149,9 @@ feature {NONE} -- Implementation
 			l_last_key := l_keys.last
 
 			-- Get or create array
-			if attached l_parent.item (l_last_key) as l_existing then
-				if l_existing.is_array then
-					l_array := l_existing.as_array
+			if attached l_parent.item (l_last_key) as al_l_existing then
+				if al_l_existing.is_array then
+					l_array := al_l_existing.as_array
 				else
 					add_error ("Key '" + l_last_key + "' is not an array of tables")
 					l_array := Void
@@ -542,12 +542,12 @@ feature {NONE} -- Implementation
 			across a_keys as ic loop
 				l_key := ic
 
-				if attached Result.item (l_key) as l_existing then
-					if l_existing.is_table then
-						Result := l_existing.as_table
-					elseif l_existing.is_array and then not l_existing.as_array.is_empty then
+				if attached Result.item (l_key) as al_l_existing then
+					if al_l_existing.is_table then
+						Result := al_l_existing.as_table
+					elseif al_l_existing.is_array and then not al_l_existing.as_array.is_empty then
 						-- For array of tables, use last element
-						l_table := l_existing.as_array.last.as_table
+						l_table := al_l_existing.as_array.last.as_table
 						Result := l_table
 					else
 						add_error ("Key '" + l_key + "' is not a table")
