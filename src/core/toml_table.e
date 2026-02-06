@@ -350,7 +350,7 @@ feature -- Output
 			across key_order as ic loop
 				l_key := ic
 				if attached item (l_key) as al_l_val then
-					l_value := l_val
+					l_value := al_l_val
 					if l_value.is_table and not l_value.is_inline_table then
 						-- Collect sub-tables for later
 						l_sub_tables.extend ([l_key, l_value.as_table])
