@@ -1,0 +1,56 @@
+# Phase 1m MML Coverage Report
+# Project: D:\prod\simple_toml
+# Date: 2026-02-06
+# Mode: retrofit
+
+## Collection Attributes Found
+| Class | Attribute | Type | MML Type |
+|-------|-----------|------|----------|
+| TOML_TABLE | entries | HASH_TABLE [TOML_VALUE, STRING_32] | MML_MAP [STRING_32, TOML_VALUE] |
+| TOML_TABLE | key_order | ARRAYED_LIST [STRING_32] | MML_SEQUENCE [STRING_32] |
+| TOML_ARRAY | items | ARRAYED_LIST [TOML_VALUE] | MML_SEQUENCE [TOML_VALUE] |
+| TOML_PARSER | errors | ARRAYED_LIST [STRING_32] | MML_SEQUENCE [STRING_32] |
+| SIMPLE_TOML | last_errors | ARRAYED_LIST [STRING_32] | MML_SEQUENCE [STRING_32] |
+
+## Model Queries Added/Verified
+| Class | Query | MML Type | Status |
+|-------|-------|----------|--------|
+| TOML_TABLE | entries_model | MML_MAP [STRING_32, TOML_VALUE] | ADDED |
+| TOML_TABLE | keys_model | MML_SEQUENCE [STRING_32] | ADDED |
+| TOML_ARRAY | items_model | MML_SEQUENCE [TOML_VALUE] | ADDED |
+| TOML_PARSER | errors_model | MML_SEQUENCE [STRING_32] | ADDED |
+| SIMPLE_TOML | errors_model | MML_SEQUENCE [STRING_32] | ADDED |
+
+## Contracts Strengthened
+- Postconditions added/enriched: 3 (TOML_TABLE.put count_updated, TOML_TABLE.remove count_decreased, SIMPLE_TOML.clear_errors model_empty)
+- Preconditions added/enriched: 0
+- Frame conditions added: 0
+- Invariants added/enriched: 4 (TOML_TABLE model_entries_count + model_keys_count, TOML_ARRAY model_count, TOML_PARSER model_count, SIMPLE_TOML model_count)
+
+## Additional Fixes
+- Fixed 7 obsolete `as_string_8` warnings (STRING_32 + STRING_8 concatenation)
+  - SIMPLE_TOML.load_file: "Cannot read file: " + a_file_path
+  - TOML_TABLE.quote_key: "%"" + a_key + "%""
+  - TOML_TABLE.to_toml_full: a_prefix + "." + l_key (2 occurrences)
+  - TOML_PARSER.parse_array_of_tables_header: "Key '" + l_last_key + "' is not an array of tables"
+  - TOML_PARSER.parse_key_value: "Duplicate key: " + l_last_key
+  - TOML_PARSER.ensure_table_path: "Key '" + l_key + "' is not a table"
+  - TOML_PARSER.add_error: a_message + " at " + line.out + ":" + column.out
+
+## ECF Updated
+- Added simple_mml dependency: <library name="simple_mml" location="$SIMPLE_EIFFEL/simple_mml/simple_mml.ecf"/>
+
+## Compilation
+Command: /d/prod/ec.sh test -config simple_toml.ecf -target simple_toml_tests
+Output: System Recompiled. C compilation completed.
+Warnings: 0
+Status: PASS
+
+## Tests
+Command: ./EIFGENs/simple_toml_tests/F_code/simple_toml.exe
+Output: 10 passed, 0 failed - ALL TESTS PASSED
+Status: PASS
+
+## Coverage Assessment
+FULL - All 5 collection attributes mapped to MML types with model queries.
+All 4 classes with collection attributes have model invariants.

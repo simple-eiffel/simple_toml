@@ -57,6 +57,19 @@ feature -- Status report
 			Result := not errors.is_empty
 		end
 
+feature -- Model Queries
+
+	errors_model: MML_SEQUENCE [STRING_32]
+			-- Mathematical model of parse errors in order.
+		do
+			create Result
+			across errors as ic loop
+				Result := Result & ic
+			end
+		ensure
+			count_matches: Result.count = errors.count
+		end
+
 feature -- Parsing
 
 	parse: detachable TOML_TABLE
@@ -153,7 +166,7 @@ feature {NONE} -- Implementation
 				if al_l_existing.is_array then
 					l_array := al_l_existing.as_array
 				else
-					add_error ("Key '" + l_last_key + "' is not an array of tables")
+					add_error ({STRING_32} "Key '" + l_last_key + {STRING_32} "' is not an array of tables")
 					l_array := Void
 				end
 			else
@@ -251,7 +264,7 @@ feature {NONE} -- Implementation
 
 			if l_value /= Void then
 				if l_target.has (l_last_key) then
-					add_error ("Duplicate key: " + l_last_key)
+					add_error ({STRING_32} "Duplicate key: " + l_last_key)
 				else
 					l_target.put (l_value, l_last_key)
 				end
@@ -550,7 +563,7 @@ feature {NONE} -- Implementation
 						l_table := al_l_existing.as_array.last.as_table
 						Result := l_table
 					else
-						add_error ("Key '" + l_key + "' is not a table")
+						add_error ({STRING_32} "Key '" + l_key + {STRING_32} "' is not a table")
 					end
 				else
 					create l_new_table.make
@@ -592,7 +605,7 @@ feature {NONE} -- Token operations
 		require
 			message_not_void: a_message /= Void
 		do
-			errors.extend (a_message + " at " + current_token.line.out + ":" + current_token.column.out)
+			errors.extend (a_message + {STRING_32} " at " + current_token.line.out + {STRING_32} ":" + current_token.column.out)
 		ensure
 			has_errors: has_errors
 		end
@@ -703,5 +716,8 @@ feature -- Output
 invariant
 	lexer_not_void: lexer /= Void
 	errors_not_void: errors /= Void
+
+	-- Model consistency
+	model_count: errors_model.count = errors.count
 
 end

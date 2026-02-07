@@ -137,6 +137,7 @@ feature -- Element change
 		ensure
 			has_key: has (a_key)
 			value_set: item (a_key) = a_value
+			count_updated: count = old count + (if old has (a_key) then 0 else 1 end)
 		end
 
 	remove (a_key: STRING_32)
@@ -149,6 +150,7 @@ feature -- Element change
 			key_order.prune_all (a_key)
 		ensure
 			removed: not has (a_key)
+			count_decreased: count = old count - 1
 		end
 
 	wipe_out
@@ -158,6 +160,30 @@ feature -- Element change
 			key_order.wipe_out
 		ensure
 			empty: is_empty
+		end
+
+feature -- Model Queries
+
+	entries_model: MML_MAP [STRING_32, TOML_VALUE]
+			-- Mathematical model of table entries as key-value map.
+		do
+			create Result
+			across entries as ic loop
+				Result := Result.updated (@ic.key, ic)
+			end
+		ensure
+			count_matches: Result.count = entries.count
+		end
+
+	keys_model: MML_SEQUENCE [STRING_32]
+			-- Mathematical model of keys in insertion order.
+		do
+			create Result
+			across key_order as ic loop
+				Result := Result & ic
+			end
+		ensure
+			count_matches: Result.count = key_order.count
 		end
 
 feature -- Convenience accessors
@@ -373,7 +399,7 @@ feature -- Output
 				if a_prefix.is_empty then
 					l_full_key := l_key
 				else
-					l_full_key := a_prefix + "." + l_key
+					l_full_key := a_prefix + {STRING_32} "." + l_key
 				end
 
 				Result.append_character ('%N')
@@ -390,7 +416,7 @@ feature -- Output
 				if a_prefix.is_empty then
 					l_full_key := l_key
 				else
-					l_full_key := a_prefix + "." + l_key
+					l_full_key := a_prefix + {STRING_32} "." + l_key
 				end
 
 				across ic.arr.items as arr_ic loop
@@ -414,7 +440,7 @@ feature {NONE} -- Implementation
 			key_not_void: a_key /= Void
 		do
 			if needs_quoting (a_key) then
-				Result := "%"" + a_key + "%""
+				Result := {STRING_32} "%"" + a_key + {STRING_32} "%""
 			else
 				Result := a_key
 			end
@@ -460,5 +486,9 @@ invariant
 	entries_not_void: entries /= Void
 	key_order_not_void: key_order /= Void
 	consistent_count: entries.count = key_order.count
+
+	-- Model consistency
+	model_entries_count: entries_model.count = count
+	model_keys_count: keys_model.count = count
 
 end

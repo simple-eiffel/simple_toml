@@ -143,6 +143,19 @@ feature -- Element change
 			empty: is_empty
 		end
 
+feature -- Model Queries
+
+	items_model: MML_SEQUENCE [TOML_VALUE]
+			-- Mathematical model of array elements in order.
+		do
+			create Result
+			across items as ic loop
+				Result := Result & ic
+			end
+		ensure
+			count_matches: Result.count = items.count
+		end
+
 feature -- Convenience accessors
 
 	string_item (a_index: INTEGER): STRING_32
@@ -254,5 +267,8 @@ feature -- Output
 
 invariant
 	items_not_void: items /= Void
+
+	-- Model consistency
+	model_count: items_model.count = count
 
 end

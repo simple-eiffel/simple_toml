@@ -75,7 +75,7 @@ feature -- Parsing
 				l_file.close
 				Result := parse (l_content)
 			else
-				last_errors.extend ("Cannot read file: " + a_file_path)
+				last_errors.extend ({STRING_32} "Cannot read file: " + a_file_path)
 			end
 		end
 
@@ -177,6 +177,20 @@ feature -- Error Tracking
 		ensure
 			no_errors: not has_errors
 			empty_list: last_errors.is_empty
+			model_empty: errors_model.count = 0
+		end
+
+feature -- Model Queries
+
+	errors_model: MML_SEQUENCE [STRING_32]
+			-- Mathematical model of errors in order.
+		do
+			create Result
+			across last_errors as ic loop
+				Result := Result & ic
+			end
+		ensure
+			count_matches: Result.count = last_errors.count
 		end
 
 feature -- Building
@@ -384,5 +398,8 @@ invariant
 	last_errors_attached: last_errors /= Void
 	has_errors_definition: has_errors = not last_errors.is_empty
 	error_count_definition: error_count = last_errors.count
+
+	-- Model consistency
+	model_count: errors_model.count = last_errors.count
 
 end
