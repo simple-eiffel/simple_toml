@@ -13,6 +13,40 @@ inherit
 
 feature -- Test: Parsing
 
+	test_load_file_utf_8
+			-- A file's non-ASCII values arrive as code points, not as
+			-- per-byte mojibake (TOML files are UTF-8 by specification).
+		local
+			t: SIMPLE_TOML
+			f: PLAIN_TEXT_FILE
+			l_path: STRING_32
+			l_bytes: STRING_8
+		do
+			create t
+			l_path := {STRING_32} "testing/utf8_probe.toml"
+			l_bytes := "name = %"caf"
+			l_bytes.append_code (195)
+			l_bytes.append_code (169)
+			l_bytes.append_code (32)
+			l_bytes.append_code (215)
+			l_bytes.append_code (169)
+			l_bytes.append ("%"%N")
+			create f.make_open_write (l_path)
+			f.put_string (l_bytes)
+			f.close
+			if attached t.load_file (l_path) as l_table and then attached l_table.string_item ({STRING_32} "name") as l_name then
+				assert ("five code points", l_name.count = 5)
+				assert ("e acute decoded", l_name.code (4) = 233)
+				assert ("hebrew shin decoded", l_name.code (5) = 1513)
+			else
+				assert ("utf-8 file parses", False)
+			end
+			create f.make_with_name (l_path)
+			if f.exists then
+				f.delete
+			end
+		end
+
 	test_parse_simple_table
 			-- Test parsing simple TOML table.
 		note

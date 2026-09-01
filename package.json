@@ -1,6 +1,6 @@
 {
   "name": "simple_toml",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple Eiffel library: simple_toml",
   "author": "Larry Rix",
   "license": "MIT",
