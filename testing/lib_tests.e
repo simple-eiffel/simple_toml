@@ -35,11 +35,12 @@ feature -- Test: Parsing
 			f.put_string (l_bytes)
 			f.close
 			if attached t.load_file (l_path) as l_table and then attached l_table.string_item ({STRING_32} "name") as l_name then
-				assert ("five code points", l_name.count = 5)
+					-- "caf" + e-acute + space + shin: six code points.
+				assert ("six code points", l_name.count = 6)
 				assert ("e acute decoded", l_name.code (4) = 233)
-				assert ("hebrew shin decoded", l_name.code (5) = 1513)
+				assert ("hebrew shin decoded", l_name.code (6) = 1513)
 			else
-				assert ("utf-8 file parses", False)
+				assert ("utf-8 file parses with the key present", False)
 			end
 			create f.make_with_name (l_path)
 			if f.exists then
