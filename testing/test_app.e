@@ -34,6 +34,7 @@ feature {NONE} -- Test Runners
 	run_lib_tests
 		do
 			create lib_tests
+			run_test (agent lib_tests.test_load_file_utf_8, "test_load_file_utf_8")
 			run_test (agent lib_tests.test_parse_simple_table, "test_parse_simple_table")
 			run_test (agent lib_tests.test_parse_string_value, "test_parse_string_value")
 			run_test (agent lib_tests.test_parse_integer_value, "test_parse_integer_value")

@@ -71,7 +71,10 @@ feature -- Parsing
 			if l_file.exists and then l_file.is_readable then
 				l_file.open_read
 				l_file.read_stream (l_file.count)
-				l_content := l_file.last_string
+					-- TOML files are UTF-8 by specification: decode the bytes.
+					-- (The previous per-byte widening turned every non-ASCII
+					-- value into mojibake.)
+				l_content := {UTF_CONVERTER}.utf_8_string_8_to_string_32 (l_file.last_string)
 				l_file.close
 				Result := parse (l_content)
 			else
