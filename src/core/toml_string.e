@@ -77,9 +77,9 @@ feature -- Output
 			-- Convert to TOML representation
 		do
 			if is_literal then
-				Result := "'" + value + "'"
+				Result := {STRING_32} "'" + value + {STRING_32} "'"
 			else
-				Result := "%"" + escape_string (value) + "%""
+				Result := {STRING_32} "%"" + escape_string (value) + {STRING_32} "%""
 			end
 		end
 

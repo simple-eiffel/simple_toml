@@ -44,6 +44,8 @@ feature {NONE} -- Test Runners
 			run_test (agent lib_tests.test_to_toml_string, "test_to_toml_string")
 			run_test (agent lib_tests.test_to_toml_integer, "test_to_toml_integer")
 			run_test (agent lib_tests.test_to_toml_boolean, "test_to_toml_boolean")
+			run_test (agent lib_tests.test_to_toml_literal_keeps_non_ascii, "test_to_toml_literal_keeps_non_ascii")
+			run_test (agent lib_tests.test_to_toml_ascii_unchanged, "test_to_toml_ascii_unchanged")
 			run_test (agent lib_tests.test_has_errors_initial, "test_has_errors_initial")
 		end
 

@@ -188,6 +188,53 @@ feature -- Test: Generation
 			assert_strings_equal ("toml false", "false", bool.to_toml)
 		end
 
+	test_to_toml_literal_keeps_non_ascii
+			-- A literal string's `to_toml' hands back the value's own code points.
+			-- The two quote manifests used to be STRING_8, which sent the STRING_32
+			-- value through the obsolete `as_string_8' and replaced every non-ASCII
+			-- code point with a null character.
+		note
+			testing: "covers/{TOML_STRING}.to_toml"
+		local
+			l_value: STRING_32
+			l_string: TOML_STRING
+			l_out: STRING_32
+		do
+			create l_value.make (3)
+			l_value.append_code (233)
+			l_value.append_code (1513)
+			l_value.append_code (955)
+			create l_string.make_literal (l_value)
+			l_out := l_string.to_toml
+				-- Quote + e-acute + Hebrew shin + Greek lambda + quote: five code points.
+			assert ("five code points", l_out.count = 5)
+			assert ("opening quote", l_out.code (1) = 39)
+			assert ("e acute survives", l_out.code (2) = 233)
+			assert ("hebrew shin survives", l_out.code (3) = 1513)
+			assert ("greek lambda survives", l_out.code (4) = 955)
+			assert ("closing quote", l_out.code (5) = 39)
+		end
+
+	test_to_toml_ascii_unchanged
+			-- Widening the manifests leaves ASCII output what it was, character for
+			-- character: the quotes around a basic and a literal string, and the
+			-- 0o and 0b prefixes on the two radix integer formats.
+		note
+			testing: "covers/{TOML_STRING}.to_toml", "covers/{TOML_INTEGER}.to_toml"
+		local
+			l_basic, l_literal: TOML_STRING
+			l_integer: TOML_INTEGER
+		do
+			create l_basic.make ({STRING_32} "a")
+			assert_strings_equal ("basic quotes", "%"a%"", l_basic.to_toml)
+			create l_literal.make_literal ({STRING_32} "a")
+			assert_strings_equal ("literal quotes", "'a'", l_literal.to_toml)
+			create l_integer.make_octal (8)
+			assert_strings_equal ("octal prefix", "0o10", l_integer.to_toml)
+			create l_integer.make_binary (5)
+			assert_strings_equal ("binary prefix", "0b101", l_integer.to_toml)
+		end
+
 feature -- Test: Error Handling
 
 	test_has_errors_initial
