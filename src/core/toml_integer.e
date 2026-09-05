@@ -99,9 +99,9 @@ feature -- Output
 			when Format_hex then
 				Result := "0x" + value.to_hex_string
 			when Format_octal then
-				Result := "0o" + to_octal_string (value)
+				Result := {STRING_32} "0o" + to_octal_string (value)
 			when Format_binary then
-				Result := "0b" + to_binary_string (value)
+				Result := {STRING_32} "0b" + to_binary_string (value)
 			else
 				Result := value.out
 			end
