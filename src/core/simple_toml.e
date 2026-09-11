@@ -398,11 +398,16 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Type references (for `like` anchors only)	toml_value_typeref: detachable TOML_VALUE		require			type_ref_only_never_call: False		attribute		end	toml_table_typeref: detachable TOML_TABLE		require			type_ref_only_never_call: False		attribute		end	toml_array_typeref: detachable TOML_ARRAY		require			type_ref_only_never_call: False		attribute		end	toml_string_typeref: detachable TOML_STRING		require			type_ref_only_never_call: False		attribute		end	toml_integer_typeref: detachable TOML_INTEGER		require			type_ref_only_never_call: False		attribute		end	toml_float_typeref: detachable TOML_FLOAT		require			type_ref_only_never_call: False		attribute		end	toml_boolean_typeref: detachable TOML_BOOLEAN		require			type_ref_only_never_call: False		attribute		end	toml_datetime_typeref: detachable TOML_DATETIME		require			type_ref_only_never_call: False		attribute		end
 invariant
+	-- Per-element and model clauses were removed 2026-09-11: an
+	-- invariant runs on every feature call, so a clause that walks
+	-- the collection or builds its MML model makes every call O(n)
+	-- and a walk over the collection O(n^2) (simple_json read a
+	-- 1434-element array in 158 s under DBC). Models belong in
+	-- postconditions of the features that change them.
 	last_errors_attached: last_errors /= Void
 	has_errors_definition: has_errors = not last_errors.is_empty
 	error_count_definition: error_count = last_errors.count
 
 	-- Model consistency
-	model_count: errors_model.count = last_errors.count
 
 end
