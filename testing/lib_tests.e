@@ -153,6 +153,31 @@ feature -- Test: Parsing
 
 feature -- Test: Generation
 
+	test_non_ascii_strings_round_trip
+			-- Characters beyond ASCII are escaped as TOML allows (\u + 4 hex digits up to
+			-- U+FFFF, \U + 8 above) and read back unchanged: e-acute, an en dash, an emoji.
+		local
+			l_toml: SIMPLE_TOML
+			l_root, l_table: TOML_TABLE
+			l_text, l_value: STRING_32
+		do
+			create l_toml
+			create l_table.make
+			l_value := {STRING_32} "caf%/233/ %/8211/ %/128512/"
+			l_table := l_table.with_string ("v", l_value)
+			create l_root.make
+			l_root := l_root.with_table ("t", l_table)
+			l_text := l_toml.serialize (l_root)
+			assert ("four-digit escape for e-acute", l_text.has_substring ({STRING_32} "\u00E9"))
+			assert ("eight-digit escape for the emoji", l_text.has_substring ({STRING_32} "\U0001F600"))
+			if attached l_toml.parse (l_text) as al_root and then attached al_root.table_item ("t") as al_t
+				and then attached al_t.string_item ("v") as al_v then
+				assert ("same text back", al_v.same_string (l_value))
+			else
+				assert ("parsed back", False)
+			end
+		end
+
 	test_to_toml_string
 			-- Test generating TOML from string value.
 		note

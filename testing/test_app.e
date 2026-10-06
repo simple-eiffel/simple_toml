@@ -37,6 +37,7 @@ feature {NONE} -- Test Runners
 			run_test (agent lib_tests.test_load_file_utf_8, "test_load_file_utf_8")
 			run_test (agent lib_tests.test_parse_simple_table, "test_parse_simple_table")
 			run_test (agent lib_tests.test_parse_string_value, "test_parse_string_value")
+			run_test (agent lib_tests.test_non_ascii_strings_round_trip, "test_non_ascii_strings_round_trip")
 			run_test (agent lib_tests.test_parse_integer_value, "test_parse_integer_value")
 			run_test (agent lib_tests.test_parse_boolean_value, "test_parse_boolean_value")
 			run_test (agent lib_tests.test_parse_array, "test_parse_array")

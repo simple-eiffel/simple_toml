@@ -117,9 +117,16 @@ feature {NONE} -- Implementation
 					Result.append ("\\")
 				else
 					if c.natural_32_code < 32 or c.natural_32_code > 126 then
-						-- Unicode escape
-						Result.append ("\u")
-						Result.append (c.natural_32_code.to_hex_string)
+							-- Unicode escape: TOML's \u takes exactly 4 hex digits and \U exactly 8.
+							-- (Before the fix every character got \u + 8 digits, which a reader takes
+							-- as \u0000 followed by the text "00E9": e-acute saved, NUL read back.)
+						if c.natural_32_code <= 0xFFFF then
+							Result.append ("\u")
+							Result.append (c.natural_32_code.to_hex_string.substring (5, 8))
+						else
+							Result.append ("\U")
+							Result.append (c.natural_32_code.to_hex_string)
+						end
 					else
 						Result.append_character (c)
 					end
