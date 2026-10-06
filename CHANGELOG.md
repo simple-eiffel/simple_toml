@@ -4,6 +4,17 @@ All notable changes to simple_toml.
 
 ## [Unreleased]
 
+### Fixed
+- **Non-ASCII text in a basic string was saved corrupted.** The serializer
+  escaped every character beyond ASCII as `\u` followed by EIGHT hex digits
+  (`NATURAL_32.to_hex_string`), but TOML's `\u` takes exactly four, so a
+  reader - this library's own included - took `\u000000E9` as a NUL followed
+  by the text "00E9". Characters up to U+FFFF now get `\u` + 4 digits and
+  characters beyond get `\U` + 8, which the lexer already read correctly.
+  Found from simple_prompter, whose settings lost a script path with an
+  e-acute in it. Test: `test_non_ascii_strings_round_trip` (e-acute, en dash,
+  emoji).
+
 ### Changed
 - Class invariants are O(1) again: clauses that built an MML model (`x_model.count = count`) or walked a collection on every feature call were removed. An invariant runs on every call, so those made each call O(n) and any loop over the object O(n^2); simple_json read a 1434-element array in 158 s under DBC before the fix. Model and per-element facts stay in the postconditions of the features that establish them.
 
