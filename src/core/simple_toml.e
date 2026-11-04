@@ -58,6 +58,7 @@ feature -- Parsing
 	load,
 	load_file (a_file_path: STRING_32): detachable TOML_TABLE
 			-- Parse TOML from file and return root table.
+			-- An empty file is a valid document: a root table with no keys.
 			-- On error, returns Void and populates `last_errors' with details.
 		require
 			not_empty: not a_file_path.is_empty
@@ -69,17 +70,26 @@ feature -- Parsing
 
 			create l_file.make_with_name (a_file_path)
 			if l_file.exists and then l_file.is_readable then
-				l_file.open_read
-				l_file.read_stream (l_file.count)
-					-- TOML files are UTF-8 by specification: decode the bytes.
-					-- (The previous per-byte widening turned every non-ASCII
-					-- value into mojibake.)
-				l_content := {UTF_CONVERTER}.utf_8_string_8_to_string_32 (l_file.last_string)
-				l_file.close
-				Result := parse (l_content)
+				if l_file.count = 0 then
+						-- `read_stream' and `parse' both refuse empty input.
+					last_toml_text := {STRING_32} ""
+					create Result.make
+				else
+					l_file.open_read
+					l_file.read_stream (l_file.count)
+						-- TOML files are UTF-8 by specification: decode the bytes.
+						-- (The previous per-byte widening turned every non-ASCII
+						-- value into mojibake.)
+					l_content := {UTF_CONVERTER}.utf_8_string_8_to_string_32 (l_file.last_string)
+					l_file.close
+					Result := parse (l_content)
+				end
 			else
 				last_errors.extend ({STRING_32} "Cannot read file: " + a_file_path)
 			end
+		ensure
+			errors_cleared_on_success: Result /= Void implies not has_errors
+			reason_on_failure: Result = Void implies has_errors
 		end
 
 	is_valid_toml (a_toml_text: STRING_32): BOOLEAN

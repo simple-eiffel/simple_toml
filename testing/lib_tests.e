@@ -13,6 +13,41 @@ inherit
 
 feature -- Test: Parsing
 
+	test_load_file_empty
+			-- An empty file is a valid TOML document: a root table with no
+			-- keys. It used to fail a precondition inside `read_stream'.
+		note
+			testing: "covers/{SIMPLE_TOML}.load_file"
+		local
+			t: SIMPLE_TOML
+			f: PLAIN_TEXT_FILE
+			l_path: STRING_32
+		do
+			create t
+			l_path := {STRING_32} "testing/empty_probe.toml"
+			create f.make_create_read_write (l_path)
+			f.close
+			if attached t.load_file (l_path) as l_table then
+				assert_integers_equal ("no keys", 0, l_table.count)
+				assert_false ("no errors", t.has_errors)
+			else
+				assert_true ("empty file gives a table", False)
+			end
+			f.delete
+		end
+
+	test_load_file_missing
+			-- A missing file still answers Void, with the reason recorded.
+		note
+			testing: "covers/{SIMPLE_TOML}.load_file"
+		local
+			t: SIMPLE_TOML
+		do
+			create t
+			assert_true ("no table", t.load_file ({STRING_32} "testing/no_such_probe.toml") = Void)
+			assert_true ("reason recorded", t.has_errors)
+		end
+
 	test_load_file_utf_8
 			-- A file's non-ASCII values arrive as code points, not as
 			-- per-byte mojibake (TOML files are UTF-8 by specification).
