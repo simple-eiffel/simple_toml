@@ -5,6 +5,11 @@ All notable changes to simple_toml.
 ## [Unreleased]
 
 ### Fixed
+- **An empty file crashed `load_file`.** `read_stream` refuses an empty file, so
+  with contracts on the call ended in a precondition violation. An empty file is
+  a valid TOML document, so `load_file` now answers a root table with no keys.
+  Found from simple_eif_phone, on an empty `eifphone.toml`. Tests:
+  `test_load_file_empty`, `test_load_file_missing`.
 - **Non-ASCII text in a basic string was saved corrupted.** The serializer
   escaped every character beyond ASCII as `\u` followed by EIGHT hex digits
   (`NATURAL_32.to_hex_string`), but TOML's `\u` takes exactly four, so a

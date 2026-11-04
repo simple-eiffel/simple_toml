@@ -48,6 +48,8 @@ feature {NONE} -- Test Runners
 			run_test (agent lib_tests.test_to_toml_literal_keeps_non_ascii, "test_to_toml_literal_keeps_non_ascii")
 			run_test (agent lib_tests.test_to_toml_ascii_unchanged, "test_to_toml_ascii_unchanged")
 			run_test (agent lib_tests.test_has_errors_initial, "test_has_errors_initial")
+			run_test (agent lib_tests.test_load_file_empty, "test_load_file_empty")
+			run_test (agent lib_tests.test_load_file_missing, "test_load_file_missing")
 		end
 
 feature {NONE} -- Implementation
